@@ -18,13 +18,13 @@
         <h2>Додати оголошення</h2>
         <form id="createForm">
           <div class="field">
-            <label for="titleInput">Заголовок (Title)</label>
+            <label for="titleInput">Заголовок</label>
             <input id="titleInput" type="text" placeholder="Введіть заголовок" />
             <p class="error-text" id="titleError"></p>
           </div>
           
           <div class="field">
-            <label for="categorySelect">Категорія (Category)</label>
+            <label for="categorySelect">Категорія</label>
             <select id="categorySelect">
               <option value="">Оберіть категорію</option>
               <option value="Навчання">Навчання</option>
@@ -35,20 +35,20 @@
           </div>
 
           <div class="field">
-            <label for="bodyInput">Текст оголошення (Body)</label>
+            <label for="bodyInput">Текст оголошення</label>
             <textarea id="bodyInput" rows="4" placeholder="Напишіть щось..."></textarea>
             <p class="error-text" id="bodyError"></p>
           </div>
 
           <div class="field">
-            <label for="authorInput">Автор (Author)</label>
+            <label for="authorInput">Автор</label>
             <input id="authorInput" type="text" placeholder="Ваше ім'я" />
             <p class="error-text" id="authorError"></p>
           </div>
 
           <div class="buttons">
-            <button type="submit">Додати</button>
-            <button type="button" id="resetBtn">Очистити</button>
+            <button type="submit">➕ Додати</button>
+            <button type="button" id="resetBtn">➖ Очистити</button>
           </div>
         </form>
       </section>
@@ -63,6 +63,7 @@
               <th>Категорія</th>
               <th>Автор</th>
               <th>Дата створення</th>
+              <th>Дії</th>
             </tr>
           </thead>
           <tbody id="itemsTableBody">
@@ -73,4 +74,3 @@
   </div>
 </body>
 </html>
-<!----->
