@@ -87,3 +87,7 @@ th:last-child {
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
 }
+td:nth-child(4) {
+  max-width: 200px;
+  word-wrap: break-word;
+}

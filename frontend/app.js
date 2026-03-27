@@ -121,3 +121,21 @@ return "<tr>" +
 
 tbody.innerHTML = rowsHtml;
 }
+
+function renderTable(items) {
+  const tbody = document.getElementById("itemsTableBody");
+  
+  const rowsHtml = items.map((item, index) => {
+    return "<tr>" +
+      "<td>" + (index + 1) + "</td>" +
+      "<td>" + item.title + "</td>" +
+      "<td>" + item.category + "</td>" +
+      "<td>" + item.body + "</td>" + // Додано вивід тексту оголошення
+      "<td>" + item.author + "</td>" +
+      "<td>" + item.createdAt + "</td>" +
+      "<td><button type='button' class='delete-btn' data-id='" + item.id + "'>🗑️ Видалити</button></td>" +
+    "</tr>";
+  }).join("");
+  
+  tbody.innerHTML = rowsHtml;
+}
