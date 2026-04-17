@@ -1,8 +1,8 @@
-const { initDb } = require("./initDb");
-const { run } = require("./dbClient");
+import { migrate } from "./migrate";
+import { run } from "./dbClient";
 
 async function seed() {
-    await initDb();
+   
     const now = new Date().toISOString();
 
     console.log("Seeding database...");

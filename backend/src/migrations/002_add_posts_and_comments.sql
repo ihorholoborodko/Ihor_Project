@@ -1,0 +1,18 @@
+CREATE TABLE Posts (
+    id INTEGER PRIMARY KEY,
+    userId INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    category TEXT NOT NULL,
+    body TEXT NOT NULL,
+    createdAt TEXT NOT NULL,
+    FOREIGN KEY (userId) REFERENCES Users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Comments (
+    id INTEGER PRIMARY KEY,
+    postId INTEGER NOT NULL,
+    text TEXT NOT NULL,
+    author TEXT NOT NULL,
+    createdAt TEXT NOT NULL,
+    FOREIGN KEY (postId) REFERENCES Posts(id) ON DELETE CASCADE
+);

@@ -103,3 +103,27 @@ curl -i -X DELETE http://localhost:3000/api/posts/1
 Складне сортування та фільтрація (Фільтр по userId, сортування по createdAt за зростанням):
 Bash
 curl -i "http://localhost:3000/api/posts?userId=1&sort=createdAt&order=asc"
+
+Додатковий функціонал (Рівень "Відмінно")
+Статистика постів за категоріями (SQL Агрегація):
+
+Bash
+curl -i http://localhost:3000/api/posts/stats
+Отримання постів з даними автора (SQL JOIN):
+(Тепер стандартний запит повертає розширені дані: authorName та authorEmail)
+Bash
+
+Bash
+curl -i http://localhost:3000/api/posts
+Демонстрація вразливості SQL-ін'єкції (Навчальний приклад):
+(Запит, що використовує конкатенацію та дозволяє обійти логіку фільтрації)
+Bash
+
+Bash
+Приклад атаки, яка поверне ВСІ пости, ігноруючи пошуковий запит
+curl -i "http://localhost:3000/api/posts/search?q=' OR '1'='1"
+Перевірка працездатності (Healthcheck):
+Bash
+
+Bash
+curl -i http://localhost:3000/api/health

@@ -1,28 +1,29 @@
-const { usersRepo, postsRepo, commentsRepo } = require("./repository");
-const { ApiError, requireString } = require("./utils");
+import { usersRepo, postsRepo, commentsRepo } from "./repository";
+import { ApiError, requireString } from "./utils";
 
-const apiService = {
+export const apiService = {
     async getUsers() { return await usersRepo.getAll(); },
-    async getUserById(id) {
+    async getUserById(id: number) {
         const user = await usersRepo.getById(id);
         if (!user) throw new ApiError(404, "NOT_FOUND", "User not found");
         return user;
     },
-    async createUser(dto) {
+    async createUser(dto: any) {
         const errors = [requireString(dto.name, "name", 2), requireString(dto.email, "email", 5)].filter(Boolean);
         if (errors.length > 0) throw new ApiError(400, "VALIDATION_ERROR", "Invalid user data", errors);
         return await usersRepo.add({ name: dto.name, email: dto.email });
     },
 
-    async getPosts(query) {
-        return await postsRepo.getPosts(query);
-    },
-    async getPostById(id) {
+    async getPosts(query: any) { return await postsRepo.getPosts(query); },
+    async getPostStats() { return await postsRepo.getStats(); },
+    async searchPostsUnsafe(q: string) { return await postsRepo.searchUnsafe(q || ""); },
+    
+    async getPostById(id: number) {
         const post = await postsRepo.getById(id);
         if (!post) throw new ApiError(404, "NOT_FOUND", "Post not found");
         return post;
     },
-    async createPost(dto) {
+    async createPost(dto: any) {
         const errors = [requireString(dto.title, "title", 3), requireString(dto.category, "category", 2), requireString(dto.body, "body", 5)].filter(Boolean);
         if (!dto.userId || isNaN(dto.userId)) errors.push({ field: "userId", message: "Valid userId is required" });
         if (errors.length > 0) throw new ApiError(400, "VALIDATION_ERROR", "Invalid post data", errors);
@@ -30,8 +31,7 @@ const apiService = {
         await this.getUserById(parseInt(dto.userId)); 
         return await postsRepo.add({ ...dto, userId: parseInt(dto.userId), createdAt: new Date().toISOString() });
     },
-
-    async updatePost(id, dto) {
+    async updatePost(id: number, dto: any) {
         const errors = [requireString(dto.title, "title", 3), requireString(dto.category, "category", 2), requireString(dto.body, "body", 5)].filter(Boolean);
         if (errors.length > 0) throw new ApiError(400, "VALIDATION_ERROR", "Invalid post data", errors);
         
@@ -39,16 +39,16 @@ const apiService = {
         if (!updated) throw new ApiError(404, "NOT_FOUND", "Post not found");
         return updated;
     },
-
-    async deletePost(id) {
+    async deletePost(id: number) {
         const deleted = await postsRepo.delete(id);
         if (!deleted) throw new ApiError(404, "NOT_FOUND", "Post not found");
         return { success: true };
     },
 
-
-    async getComments(postIdFilter) { return await commentsRepo.getComments(postIdFilter); },
-    async createComment(dto) {
+    async getComments(postIdFilter: any) { 
+        return await commentsRepo.getComments(postIdFilter ? parseInt(postIdFilter) : undefined); 
+    },
+    async createComment(dto: any) {
         const errors = [requireString(dto.text, "text", 2), requireString(dto.author, "author", 2)].filter(Boolean);
         if (!dto.postId || isNaN(dto.postId)) errors.push({ field: "postId", message: "Valid postId is required" });
         if (errors.length > 0) throw new ApiError(400, "VALIDATION_ERROR", "Invalid comment data", errors);
@@ -57,5 +57,3 @@ const apiService = {
         return await commentsRepo.add({ postId: parseInt(dto.postId), text: dto.text, author: dto.author, createdAt: new Date().toISOString() });
     }
 };
-
-module.exports = apiService;
