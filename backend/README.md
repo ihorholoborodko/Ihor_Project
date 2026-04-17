@@ -85,3 +85,21 @@ curl -i -X POST http://localhost:3000/api/users -H "Content-Type: application/js
 
 Bash
 curl -i http://localhost:3000/api/posts/999
+
+Додатковий функціонал (Рівень "Добре")
+
+Наповнення бази тестовими даними (Seed):
+Bash
+npm run seed
+
+Оновити пост (PUT):
+Bash
+curl -i -X PUT http://localhost:3000/api/posts/1 -H "Content-Type: application/json" -d "{\"title\":\"Оновлений заголовок\",\"category\":\"News\",\"body\":\"Оновлений текст\"}"
+
+Видалити пост (DELETE, поверне 204 No Content):
+Bash
+curl -i -X DELETE http://localhost:3000/api/posts/1
+
+Складне сортування та фільтрація (Фільтр по userId, сортування по createdAt за зростанням):
+Bash
+curl -i "http://localhost:3000/api/posts?userId=1&sort=createdAt&order=asc"

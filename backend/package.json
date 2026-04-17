@@ -12,5 +12,10 @@
   },
   "devDependencies": {
     "nodemon": "*"
+  },
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "seed": "node src/db/seed.js"
   }
 }

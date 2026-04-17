@@ -12,8 +12,20 @@ const apiController = {
     },
 
     getPosts: async (req, res, next) => {
-        try { res.status(200).json({ items: await apiService.getPosts(req.query.category) }); } catch (e) { next(e); }
+        try { res.status(200).json({ items: await apiService.getPosts(req.query) }); } catch (e) { next(e); }
     },
+    
+    updatePost: async (req, res, next) => {
+        try { res.status(200).json(await apiService.updatePost(parseInt(req.params.id), req.body)); } catch (e) { next(e); }
+    }, 
+
+    deletePost: async (req, res, next) => {
+        try { 
+            await apiService.deletePost(parseInt(req.params.id));
+            res.status(204).send(); 
+        } catch (e) { next(e); }
+    },
+    
     getPostById: async (req, res, next) => {
         try { res.status(200).json(await apiService.getPostById(parseInt(req.params.id))); } catch (e) { next(e); }
     },

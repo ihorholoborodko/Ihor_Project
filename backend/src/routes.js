@@ -9,6 +9,8 @@ router.post("/users", controller.createUser);
 router.get("/posts", controller.getPosts);
 router.get("/posts/:id", controller.getPostById);
 router.post("/posts", controller.createPost);
+router.put("/posts/:id", controller.updatePost);  
+router.delete("/posts/:id", controller.deletePost);
 
 router.get("/comments", controller.getComments);
 router.post("/comments", controller.createComment);
