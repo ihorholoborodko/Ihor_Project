@@ -1,42 +1,45 @@
-const db = {
-    users: [],
-    posts: [],
-    comments: []
+const { all, get, run } = require("./db/dbClient");
+
+const usersRepo = {
+    async getAll() { return await all("SELECT * FROM Users ORDER BY id DESC;"); },
+    async getById(id) { return await get(`SELECT * FROM Users WHERE id = ${Number(id)};`); },
+    async add(user) {
+        const res = await run(`INSERT INTO Users (name, email) VALUES ('${user.name}', '${user.email}');`);
+        return await this.getById(res.lastID);
+    }
 };
 
-const ids = {
-    users: 1,
-    posts: 1,
-    comments: 1
+const postsRepo = {
+
+    async getPosts(category) {
+        let sql = `SELECT * FROM Posts`;
+        if (category) {
+            sql += ` WHERE category = '${category}'`;
+        }
+        sql += ` ORDER BY id DESC LIMIT 10;`;
+        return await all(sql);
+    },
+    async getById(id) { return await get(`SELECT * FROM Posts WHERE id = ${Number(id)};`); },
+    async add(post) {
+        const res = await run(`INSERT INTO Posts (userId, title, category, body, createdAt) VALUES (${Number(post.userId)}, '${post.title}', '${post.category}', '${post.body}', '${post.createdAt}');`);
+        return await this.getById(res.lastID);
+    }
 };
 
-class Repository {
-    constructor(collection) {
-        this.collection = collection;
+const commentsRepo = {
+    async getComments(postId) {
+        let sql = `SELECT * FROM Comments`;
+        if (postId) {
+            sql += ` WHERE postId = ${Number(postId)}`;
+        }
+        sql += ` ORDER BY id DESC;`;
+        return await all(sql);
+    },
+    async getById(id) { return await get(`SELECT * FROM Comments WHERE id = ${Number(id)};`); },
+    async add(comment) {
+        const res = await run(`INSERT INTO Comments (postId, text, author, createdAt) VALUES (${Number(comment.postId)}, '${comment.text}', '${comment.author}', '${comment.createdAt}');`);
+        return await this.getById(res.lastID);
     }
-    getAll() { return db[this.collection]; }
-    getById(id) { return db[this.collection].find(item => item.id === id); }
-    add(item) { 
-        item.id = ids[this.collection]++; 
-        db[this.collection].push(item); 
-        return item; 
-    }
-    update(id, updatedItem) {
-        const index = db[this.collection].findIndex(item => item.id === id);
-        if (index === -1) return null;
-        db[this.collection][index] = { ...db[this.collection][index], ...updatedItem };
-        return db[this.collection][index];
-    }
-    delete(id) {
-        const index = db[this.collection].findIndex(item => item.id === id);
-        if (index === -1) return false;
-        db[this.collection].splice(index, 1);
-        return true;
-    }
-}
-
-module.exports = {
-    usersRepo: new Repository("users"),
-    postsRepo: new Repository("posts"),
-    commentsRepo: new Repository("comments")
 };
+
+module.exports = { usersRepo, postsRepo, commentsRepo };

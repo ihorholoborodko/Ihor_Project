@@ -1,27 +1,32 @@
 const apiService = require("./service");
 
 const apiController = {
-    // Users
-    getUsers: (req, res) => res.status(200).json({ items: apiService.getUsers() }),
-    getUserById: (req, res) => res.status(200).json(apiService.getUserById(parseInt(req.params.id))),
-    createUser: (req, res) => res.status(201).json(apiService.createUser(req.body)),
-
-    // Posts
-    getPosts: (req, res) => {
-        // Читаємо query param ?category=...
-        const category = req.query.category;
-        res.status(200).json({ items: apiService.getPosts(category) });
+    getUsers: async (req, res, next) => {
+        try { res.status(200).json({ items: await apiService.getUsers() }); } catch (e) { next(e); }
     },
-    getPostById: (req, res) => res.status(200).json(apiService.getPostById(parseInt(req.params.id))),
-    createPost: (req, res) => res.status(201).json(apiService.createPost(req.body)),
-
-    // Comments
-    getComments: (req, res) => {
-        // Читаємо query param ?postId=...
-        const postId = req.query.postId;
-        res.status(200).json({ items: apiService.getComments(postId) });
+    getUserById: async (req, res, next) => {
+        try { res.status(200).json(await apiService.getUserById(parseInt(req.params.id))); } catch (e) { next(e); }
     },
-    createComment: (req, res) => res.status(201).json(apiService.createComment(req.body))
+    createUser: async (req, res, next) => {
+        try { res.status(201).json(await apiService.createUser(req.body)); } catch (e) { next(e); }
+    },
+
+    getPosts: async (req, res, next) => {
+        try { res.status(200).json({ items: await apiService.getPosts(req.query.category) }); } catch (e) { next(e); }
+    },
+    getPostById: async (req, res, next) => {
+        try { res.status(200).json(await apiService.getPostById(parseInt(req.params.id))); } catch (e) { next(e); }
+    },
+    createPost: async (req, res, next) => {
+        try { res.status(201).json(await apiService.createPost(req.body)); } catch (e) { next(e); }
+    },
+
+    getComments: async (req, res, next) => {
+        try { res.status(200).json({ items: await apiService.getComments(req.query.postId) }); } catch (e) { next(e); }
+    },
+    createComment: async (req, res, next) => {
+        try { res.status(201).json(await apiService.createComment(req.body)); } catch (e) { next(e); }
+    }
 };
 
 module.exports = apiController;
