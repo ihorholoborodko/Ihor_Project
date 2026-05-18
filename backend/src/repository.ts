@@ -14,7 +14,6 @@ export const usersRepo = {
 };
 
 export const postsRepo = {
-    // 1. ВИМОГА: JOIN-запит (повертає пости разом з даними автора)
     async getPosts(query: any) {
         let sql = `
             SELECT p.*, u.name as authorName, u.email as authorEmail 
@@ -32,13 +31,11 @@ export const postsRepo = {
         return await all<any>(sql);
     },
     
-    // 2. ВИМОГА: Агрегація (рахуємо скільки постів у кожній категорії)
     async getStats() {
         const sql = `SELECT category, COUNT(*) as postCount FROM Posts GROUP BY category;`;
         return await all<any>(sql);
     },
 
-    // 3. ВИМОГА: Демонстрація SQL-ін'єкції (вразливий запит)
     async searchUnsafe(q: string) {
         const sql = `SELECT * FROM Posts WHERE title LIKE '%${q}%' OR body LIKE '%${q}%';`;
         return await all<Post>(sql);
