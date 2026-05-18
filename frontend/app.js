@@ -122,20 +122,37 @@ return "<tr>" +
 tbody.innerHTML = rowsHtml;
 }
 
-function renderTable(items) {
-  const tbody = document.getElementById("itemsTableBody");
-  
-  const rowsHtml = items.map((item, index) => {
-    return "<tr>" +
-      "<td>" + (index + 1) + "</td>" +
-      "<td>" + item.title + "</td>" +
-      "<td>" + item.category + "</td>" +
-      "<td>" + item.body + "</td>" + // Додано вивід тексту оголошення
-      "<td>" + item.author + "</td>" +
-      "<td>" + item.createdAt + "</td>" +
-      "<td><button type='button' class='delete-btn' data-id='" + item.id + "'>🗑️ Видалити</button></td>" +
-    "</tr>";
-  }).join("");
-  
-  tbody.innerHTML = rowsHtml;
-}
+let sortedColumn = "";
+let sortArc = true;
+
+document.querySelector("#itemsTable thead");
+
+const thead = document.querySelector("#itemsTable thead");
+
+thead.addEventListener("click", (event) => {
+    const th = event.target.closest("th");
+    if (!th || !th.dataset.key) return;
+
+    const key = th.dataset.key;
+
+    if (sortedColumn === key) {
+        sortArc = !sortArc;
+    } else {
+        sortedColumn = key;
+        sortArc = true;
+    }
+
+    posts.sort((a, b) => {
+        let valA = a[key];
+        let valB = b[key];
+
+        if (typeof valA === "string") valA = valA.toLowerCase();
+        if (typeof valB === "string") valB = valB.toLowerCase();
+
+        if (valA < valB) return sortArc ? -1 : 1;
+        if (valA > valB) return sortArc ? 1 : -1;
+        return 0;
+    });
+
+    renderTable(posts);
+});
