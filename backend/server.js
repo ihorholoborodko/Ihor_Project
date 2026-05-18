@@ -31,21 +31,36 @@ let ads = [
 
 const router = express.Router();
 
+// Отримати всі оголошення
 router.get("/ads", (req, res) => {
   res.json(ads);
 });
 
 router.post("/ads", (req, res) => {
   const { title, category, body, author } = req.body;
-  if (!title || !category || !body) {
-    return res.status(400).json({ status: 400, message: "Заповніть обов'язкові поля" });
+  
+  let errors = {};
+  if (!title) errors.title = ["Заголовок є обов'язковим"];
+  if (!category) errors.category = ["Оберіть категорію зі списку"];
+  if (!body) errors.body = ["Текст оголошення не може бути порожнім"];
+
+  if (Object.keys(errors).length > 0) {
+    return res.status(400).json({ 
+      status: 400, 
+      message: "Validation error", 
+      errors 
+    });
   }
+
   const newAd = { 
     id: Date.now().toString(), 
-    title, category, body, 
+    title, 
+    category, 
+    body, 
     author: author || "Анонім", 
     createdAt: new Date().toLocaleString() 
   };
+  
   ads.push(newAd);
   res.status(201).json(newAd);
 });
