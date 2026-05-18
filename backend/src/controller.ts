@@ -6,6 +6,7 @@ interface IdParam {
 }
 
 export const apiController = {
+    // --- USERS ---
     getUsers: async (req: Request, res: Response, next: NextFunction) => {
         try { 
             const users = await apiService.getUsers();
@@ -28,6 +29,8 @@ export const apiController = {
         } catch (e) { next(e); }
     },
 
+    // --- POSTS ---
+    // Отримання постів (з JOIN автором у сервісі/репозиторії)
     getPosts: async (req: Request, res: Response, next: NextFunction) => {
         try { 
             const posts = await apiService.getPosts(req.query);
@@ -35,6 +38,7 @@ export const apiController = {
         } catch (e) { next(e); }
     },
 
+    // Агрегація: статистика за категоріями
     getPostStats: async (req: Request, res: Response, next: NextFunction) => {
         try { 
             const stats = await apiService.getPostStats();
@@ -42,6 +46,7 @@ export const apiController = {
         } catch (e) { next(e); }
     },
 
+    // Демонстрація SQL-ін'єкції
     searchPostsUnsafe: async (req: Request, res: Response, next: NextFunction) => {
         try { 
             const query = req.query.q as string;
@@ -74,10 +79,11 @@ export const apiController = {
     deletePost: async (req: Request<IdParam>, res: Response, next: NextFunction) => {
         try { 
             await apiService.deletePost(parseInt(req.params.id));
-            res.status(204).send(); 
+            res.status(204).send(); // No Content при видаленні
         } catch (e) { next(e); }
     },
 
+    // --- COMMENTS ---
     getComments: async (req: Request, res: Response, next: NextFunction) => {
         try { 
             const comments = await apiService.getComments(req.query.postId);

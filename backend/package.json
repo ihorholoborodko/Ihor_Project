@@ -1,7 +1,8 @@
 {
-  "name": "lr2-api",
+  "name": "backend",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "type": "module",
+  "main": "server.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
@@ -9,7 +10,8 @@
     "seed": "ts-node src/db/seed.ts"
   },
   "dependencies": {
-    "express": "*",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
     "sqlite3": "^6.0.1"
   },
   "devDependencies": {

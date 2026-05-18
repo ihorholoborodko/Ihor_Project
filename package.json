@@ -1,17 +1,24 @@
 {
-  "name": "ihor_project-0.1.1",
+  "name": "ihor_project-0.3.0",
   "version": "1.0.0",
   "description": "Ihor_Project",
-  "main": "index.html",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "live-server frontend"
+    "install:backend": "npm install --prefix backend",
+    "dev": "npm run dev --prefix backend"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "dependencies": {
+    "express": "^5.2.1",
+    "sqlite3": "^6.0.1"
+  },
   "devDependencies": {
-    "live-server": "^1.2.2"
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.8.0",
+    "tsx": "^4.22.0",
+    "typescript": "^6.0.3"
   }
 }
